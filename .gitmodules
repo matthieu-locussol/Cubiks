@@ -1,0 +1,19 @@
+[submodule "submodules/SFML"]
+	path = submodules/SFML
+	url = git@github.com:SFML/SFML.git
+	branch = 2.5.x
+[submodule "submodules/Catch2"]
+	path = submodules/Catch2
+	url = git@github.com:catchorg/Catch2.git
+[submodule "submodules/glm"]
+	path = submodules/glm
+	url = https://github.com/g-truc/glm.git
+	branch = 0.9.8
+[submodule "submodules/globjects"]
+	path = submodules/globjects
+	url = https://github.com/cginternals/globjects.git
+	branch = v2.0
+[submodule "submodules/glbinding"]
+	path = submodules/glbinding
+	url = https://github.com/cginternals/glbinding.git
+	branch = v2.1
