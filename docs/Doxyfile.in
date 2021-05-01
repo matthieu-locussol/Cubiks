@@ -4,9 +4,9 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = Structura
+PROJECT_NAME           = Cubiks
 PROJECT_NUMBER         =
-PROJECT_BRIEF          = "Algorithms and data structures written in C++."
+PROJECT_BRIEF          = "OpenGL playground."
 PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/Documentation
 CREATE_SUBDIRS         = NO
