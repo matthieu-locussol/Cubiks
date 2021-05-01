@@ -1,16 +1,16 @@
 [submodule "submodules/Catch2"]
 	path = submodules/Catch2
-	url = git@github.com:catchorg/Catch2.git
+	url = https://github.com/catchorg/Catch2.git
 [submodule "submodules/SFML"]
 	path = submodules/SFML
-	url = git@github.com:SFML/SFML.git
+	url = https://github.com/SFML/SFML.git
 	branch = 2.5.x
 [submodule "submodules/glm"]
 	path = submodules/glm
-	url = git@github.com:g-truc/glm.git
+	url = https://github.com/g-truc/glm.git
 [submodule "submodules/glbinding"]
 	path = submodules/glbinding
-	url = git@github.com:cginternals/glbinding.git
+	url = https://github.com/cginternals/glbinding.git
 [submodule "submodules/globjects"]
 	path = submodules/globjects
-	url = git@github.com:cginternals/globjects.git
+	url = https://github.com/cginternals/globjects.git
