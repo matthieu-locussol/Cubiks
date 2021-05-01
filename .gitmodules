@@ -8,3 +8,9 @@
 [submodule "submodules/glm"]
 	path = submodules/glm
 	url = git@github.com:g-truc/glm.git
+[submodule "submodules/glbinding"]
+	path = submodules/glbinding
+	url = git@github.com:cginternals/glbinding.git
+[submodule "submodules/globjects"]
+	path = submodules/globjects
+	url = git@github.com:cginternals/globjects.git

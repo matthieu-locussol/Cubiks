@@ -47,16 +47,11 @@ SET( SFML_BUILD_GRAPHICS OFF )
 SET( SFML_BUILD_NETWORK OFF )
 
 ADD_SUBDIRECTORY( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/SFML" )
-
 INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/SFML/include" )
 
 # Configuring glm
-# ADD_SUBDIRECTORY( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glm" )
-
-# INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glm" )
-
-find_package(GLM REQUIRED)
-INCLUDE_DIRECTORIES( ${GLM_INCLUDE_DIRS} )
+ADD_SUBDIRECTORY( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glm" )
+INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glm" )
 
 # Configuring glbinding
 SET( OPTION_BUILD_EXAMPLES OFF )
@@ -64,18 +59,14 @@ SET( OPTION_BUILD_OWN_KHR_HEADERS ON )
 SET( CMAKE_POLICY_DEFAULT_CMP0120 OLD )
 
 ADD_SUBDIRECTORY( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glbinding" )
-
 INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glbinding/source/glbinding/include" )
+INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glbinding/source/glbinding-aux/include" )
 
-set( glbinding_DIR "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glbinding" )
-find_package(glbinding REQUIRED)
+SET( glbinding_DIR "${CMAKE_CURRENT_SOURCE_DIR}/submodules/glbinding" )
+FIND_PACKAGE( glbinding REQUIRED )
 
 # Configuring globjects
 ADD_SUBDIRECTORY( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/globjects" )
-
-set( globjects_DIR "${CMAKE_CURRENT_SOURCE_DIR}/submodules/globjects" )
-find_package(globjects REQUIRED)
-
 INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/globjects/source/globjects/include" )
 
 # Configuring Doxygen target
@@ -106,6 +97,7 @@ ADD_EXECUTABLE( ${PROJECT_NAME} ${CUBIKS_FILES} ${CUBIKS_APPLICATION} )
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PUBLIC sfml-system )
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PUBLIC sfml-window )
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PUBLIC glbinding::glbinding )
+TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PUBLIC glbinding::glbinding-aux )
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PUBLIC globjects::globjects )
 
 # Configuring Catch2
