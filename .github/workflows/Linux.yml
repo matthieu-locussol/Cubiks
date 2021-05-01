@@ -27,11 +27,13 @@ jobs:
           sudo apt-get -y install libxrandr-dev
           sudo apt-get -y install libgl1-mesa-dev
           sudo apt-get -y install libudev-dev
-          cd Cubiks/submodules/glm
+          cd Cubiks/submodules/glbinding
+          git apply ../../patches/0001-fix-removed-deploy-project-from-CMakeLists.txt.patch
+          cd ../glm
           cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
           cd build
           cmake --build . --config "Release" --parallel 4
-          cmake --build . --target install --config "Release"
+          sudo cmake --build . --target install --config "Release"
 
       - name: Configure build
         working-directory: ${{runner.workspace}}

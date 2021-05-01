@@ -25,7 +25,9 @@ jobs:
       - name: Install dependencies
         working-directory: ${{runner.workspace}}
         run: |
-          cd Cubiks/submodules/glm
+          cd Cubiks/submodules/glbinding
+          git apply ../../patches/0001-fix-removed-deploy-project-from-CMakeLists.txt.patch
+          cd ../glm
           cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
           cd build
           cmake --build . --config "Release" --parallel 4

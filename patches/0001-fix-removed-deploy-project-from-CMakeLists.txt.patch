@@ -1,0 +1,25 @@
+From f1aaddf6bf4260666a7d3facc60c38efd95645a6 Mon Sep 17 00:00:00 2001
+From: Matthieu Locussol <dev.matthieu.locussol@gmail.com>
+Date: Sat, 1 May 2021 21:57:13 +0200
+Subject: [PATCH] fix: removed deploy project from CMakeLists.txt
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 45f9981f..1896f0c3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -188,7 +188,7 @@ endif()
+ add_subdirectory(3rdparty)
+ add_subdirectory(source)
+ add_subdirectory(docs)
+-add_subdirectory(deploy)
++#add_subdirectory(deploy)
+ 
+ 
+ # 
+-- 
+2.31.1
+
