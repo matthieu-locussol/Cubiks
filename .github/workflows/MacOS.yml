@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         cxx:
-          - g++-10
           - clang++
         configs: [Release, Debug]
     steps:
@@ -23,7 +22,13 @@ jobs:
           submodules: recursive
 
       - name: Install dependencies
-        run: brew install glm
+        working-directory: ${{runner.workspace}}
+        run: |
+          cd Cubiks/submodules/glm
+          cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
+          cd build
+          cmake --build . --config "Release" --parallel 4
+          cmake --build . --target install --config "Release"
 
       - name: Configure build
         working-directory: ${{runner.workspace}}

@@ -22,6 +22,15 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
 
+      - name: Install dependencies
+        working-directory: ${{runner.workspace}}
+        run: |
+          cd Cubiks/submodules/glm
+          cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
+          cd build
+          cmake --build . --config "Release" --parallel 4
+          cmake --build . --target install --config "Release"
+
       - name: Configure build
         working-directory: ${{runner.workspace}}
         run: |

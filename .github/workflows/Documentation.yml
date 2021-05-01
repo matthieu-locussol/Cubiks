@@ -20,7 +20,8 @@ jobs:
           cd Cubiks
           cmake -Bbuild \
                 -DCMAKE_BUILD_TYPE=Release \
-                -DCUBIKS_DOCUMENTATION=ON
+                -DCUBIKS_DOCUMENTATION=ON \
+                -DCUBIKS_APP=OFF
 
       - name: Build library & documentation
         working-directory: ${{runner.workspace}}
