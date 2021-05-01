@@ -1,117 +1,71 @@
 #include <SFML/Window.hpp>
-#include <glbinding/Binding.h>
 #include <glbinding/gl/gl.h>
-#include <iostream>
+#include <glm/vec3.hpp>
+#include <globjects/VertexAttributeBinding.h>
+#include <globjects/base/File.h>
+#include <globjects/globjects.h>
 
-const char *vertexShaderSource =
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-const char *fragmentShaderSource =
-    "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n\0";
+int main(int argc, char* argv[])
+{
+    sf::ContextSettings settings;
+    settings.depthBits = 24;
+    settings.stencilBits = 8;
+    settings.antialiasingLevel = 4;
+    settings.majorVersion = 3;
+    settings.minorVersion = 3;
+    settings.attributeFlags = sf::ContextSettings::Core;
 
-int main(int argc, char *argv[]) {
-  sf::ContextSettings settings;
-  settings.depthBits = 24;
-  settings.stencilBits = 8;
-  settings.antialiasingLevel = 4;
-  settings.majorVersion = 3;
-  settings.minorVersion = 3;
-  settings.attributeFlags = sf::ContextSettings::Core;
+    sf::Window window(sf::VideoMode(1200, 800), "Cubiks", sf::Style::Default,
+        settings);
+    window.setVerticalSyncEnabled(true);
+    window.setActive(true);
 
-  sf::Window window(sf::VideoMode(1200, 800), "Cubiks", sf::Style::Default,
-                    settings);
-  window.setVerticalSyncEnabled(true);
-  window.setActive(true);
+    globjects::init(nullptr);
 
-  glbinding::Binding::initialize(nullptr);
+    auto program = globjects::Program::create();
 
-  int success;
-  char infoLog[512];
+    auto vertexShaderData = globjects::Shader::sourceFromFile("shaders/triangle.vert.glsl");
+    auto fragmentShaderData = globjects::Shader::sourceFromFile("shaders/triangle.frag.glsl");
 
-  unsigned int vertexShader = gl::glCreateShader(gl::GL_VERTEX_SHADER);
-  gl::glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-  gl::glCompileShader(vertexShader);
+    auto vertexShader = globjects::Shader::create(gl::GL_VERTEX_SHADER);
+    vertexShader->setSource(vertexShaderData.get());
+    auto fragmentShader = globjects::Shader::create(gl::GL_FRAGMENT_SHADER);
+    fragmentShader->setSource(fragmentShaderData.get());
 
-  gl::glGetShaderiv(vertexShader, gl::GL_COMPILE_STATUS, &success);
-  if (!success) {
-    gl::glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-              << infoLog << std::endl;
-  }
+    program->attach(vertexShader.get(), fragmentShader.get());
 
-  unsigned int fragmentShader = gl::glCreateShader(gl::GL_FRAGMENT_SHADER);
-  gl::glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-  gl::glCompileShader(fragmentShader);
+    const std::array<glm::vec3, 3> vertices{{glm::vec3(-0.5f, -0.5f, 0.0f),
+        glm::vec3(0.5f, -0.5f, 0.0f),
+        glm::vec3(0.0f, 0.5f, 0.0f)}};
 
-  gl::glGetShaderiv(fragmentShader, gl::GL_COMPILE_STATUS, &success);
-  if (!success) {
-    gl::glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-    std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"
-              << infoLog << std::endl;
-  }
+    auto buffer = globjects::Buffer::create();
+    buffer->setData(vertices, gl::GL_STATIC_DRAW);
 
-  unsigned int shaderProgram = gl::glCreateProgram();
-  gl::glAttachShader(shaderProgram, vertexShader);
-  gl::glAttachShader(shaderProgram, fragmentShader);
-  gl::glLinkProgram(shaderProgram);
+    auto vao = globjects::VertexArray::create();
+    auto binding = vao->binding(1);
+    binding->setAttribute(0);
+    binding->setBuffer(buffer.get(), 0, sizeof(glm::vec3));
+    binding->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
+    vao->enable(0);
 
-  gl::glDeleteShader(vertexShader);
-  gl::glDeleteShader(fragmentShader);
+    while (window.isOpen()) {
+        sf::Event event;
 
-  float vertices[] = {
-      -0.5f, -0.5f, 0.0f, // left
-      0.5f,  -0.5f, 0.0f, // right
-      0.0f,  0.5f,  0.0f  // top
-  };
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
 
-  unsigned int VBO, VAO;
-  gl::glGenVertexArrays(1, &VAO);
-  gl::glGenBuffers(1, &VBO);
+        gl::glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        gl::glClear(gl::GL_COLOR_BUFFER_BIT);
 
-  gl::glBindVertexArray(VAO);
+        program->use();
+        vao->drawArrays(gl::GL_TRIANGLE_STRIP, 0, 3);
+        program->release();
 
-  gl::glBindBuffer(gl::GL_ARRAY_BUFFER, VBO);
-  gl::glBufferData(gl::GL_ARRAY_BUFFER, sizeof(vertices), vertices,
-                   gl::GL_STATIC_DRAW);
-
-  gl::glVertexAttribPointer(0, 3, gl::GL_FLOAT, gl::GL_FALSE, 3 * sizeof(float),
-                            (void *)0);
-  gl::glEnableVertexAttribArray(0);
-
-  gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
-  gl::glBindVertexArray(0);
-
-  while (window.isOpen()) {
-    sf::Event event;
-
-    while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) {
-        window.close();
-      }
+        window.display();
     }
 
-    gl::glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    gl::glClear(gl::GL_COLOR_BUFFER_BIT);
-
-    gl::glUseProgram(shaderProgram);
-    gl::glBindVertexArray(VAO);
-    gl::glDrawArrays(gl::GL_TRIANGLES, 0, 3);
-
-    window.display();
-  }
-
-  gl::glDeleteVertexArrays(1, &VAO);
-  gl::glDeleteBuffers(1, &VBO);
-  gl::glDeleteProgram(shaderProgram);
-
-  return 0;
+    return 0;
 }
