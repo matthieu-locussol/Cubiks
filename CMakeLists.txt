@@ -3,6 +3,9 @@ CMAKE_MINIMUM_REQUIRED( VERSION 3.0.0 )
 # Configure project
 PROJECT( Cubiks VERSION 1.0.0 )
 
+OPTION( CUBIKS_TESTS         "Build ${PROJECT_NAME} test suite" OFF )
+OPTION( CUBIKS_DOCUMENTATION "Build ${PROJECT_NAME} documentation" OFF )
+
 # Configuration CMake Module Path
 SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake" )
 SET( CMAKE_POLICY_DEFAULT_CMP0077 NEW )
@@ -70,24 +73,27 @@ FIND_PACKAGE( glbinding REQUIRED )
 ADD_SUBDIRECTORY( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/globjects" )
 INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/globjects/source/globjects/include" )
 
-# Configuring Doxygen target
-FIND_PACKAGE( Doxygen )
 
-IF( DOXYGEN_FOUND )
-	SET( DOXYGEN_IN  ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in )
-	SET( DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/docs/Doxyfile )
+IF( CUBIKS_DOCUMENTATION )
+	# Configuring Doxygen target
+	FIND_PACKAGE( Doxygen )
 
-	CONFIGURE_FILE( ${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY )
+	IF( DOXYGEN_FOUND )
+		SET( DOXYGEN_IN  ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in )
+		SET( DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/docs/Doxyfile )
 
-	ADD_CUSTOM_TARGET(
-		Documentation ALL
-		COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs
-		COMMENT "Generating documentation using Doxygen."
-		VERBATIM
-	)
-ELSE()
-	MESSAGE( STATUS "${PROJECT_NAME}: Doxygen needs to be installed to generate documentation." )
+		CONFIGURE_FILE( ${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY )
+
+		ADD_CUSTOM_TARGET(
+			Documentation ALL
+			COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs
+			COMMENT "Generating documentation using Doxygen."
+			VERBATIM
+		)
+	ELSE()
+		MESSAGE( STATUS "${PROJECT_NAME}: Doxygen needs to be installed to generate documentation." )
+	ENDIF()
 ENDIF()
 
 # Adding application
@@ -101,11 +107,13 @@ TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PUBLIC glbinding::glbinding )
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PUBLIC glbinding::glbinding-aux )
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PUBLIC globjects::globjects )
 
-# Configuring Catch2
-ADD_SUBDIRECTORY( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/Catch2" )
+IF( CUBIKS_TESTS )
+	# Configuring Catch2
+	ADD_SUBDIRECTORY( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/Catch2" )
 
-# Adding tests
-FILE( GLOB_RECURSE CUBIKS_TESTS_FILES "tests/**/*.cpp" )
+	# Adding tests
+	FILE( GLOB_RECURSE CUBIKS_TESTS_FILES "tests/**/*.cpp" )
 
-ADD_EXECUTABLE( "${PROJECT_NAME}Tests" ${CUBIKS_FILES} ${CUBIKS_TESTS_FILES} )
-TARGET_LINK_LIBRARIES( "${PROJECT_NAME}Tests" PRIVATE Catch2::Catch2WithMain )
+	ADD_EXECUTABLE( "${PROJECT_NAME}Tests" ${CUBIKS_FILES} ${CUBIKS_TESTS_FILES} )
+	TARGET_LINK_LIBRARIES( "${PROJECT_NAME}Tests" PRIVATE Catch2::Catch2WithMain )
+ENDIF()
