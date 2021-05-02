@@ -45,7 +45,7 @@ jobs:
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
-        if: ${{ matrix.config.name == "Windows" }}
+        if: ${{ matrix.config.name == Windows }}
 
       - name: Install dependencies (Windows & MacOS)
         working-directory: ${{ runner.workspace }}
