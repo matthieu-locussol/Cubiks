@@ -156,6 +156,7 @@ jobs:
 
   release:
     name: Release
+    if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
     needs: build
     steps:
