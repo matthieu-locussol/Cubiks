@@ -38,13 +38,88 @@ jobs:
         run: |
           cmake -Bbuild -H$GITHUB_WORKSPACE \
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
-                -DCUBIKS_TESTS=ON \
-                -DCUBIKS_BUNDLE=ON
+                -DCUBIKS_TESTS=ON
 
       - name: Build library & tests
         working-directory: ${{runner.workspace}}/build
-        run: cmake --build . --config "${{matrix.configs}}" --parallel 4
+        run: |
+          cmake --build . --config "${{matrix.configs}}" --parallel 4
+          md Cubiks_Windows_${{matrix.configs}}
+          xcopy Cubiks.exe Cubiks_Windows_${{matrix.configs}}\.
+          xcopy submodules\*.dll Cubiks_Windows_${{matrix.configs}}\.
+          xcopy ../Cubiks/assets Cubiks_Windows_${{matrix.configs}}\. /s /e /i
+          xcopy ../Cubiks/shaders Cubiks_Windows_${{matrix.configs}}\. /s /e /i
 
       - name: Run tests
         working-directory: ${{runner.workspace}}/build
         run: .\\${{matrix.configs}}\\CubiksTests.exe
+
+      - name: Packing artifacts
+        working-directory: ${{runner.workspace}}/build
+        run: cmake -E tar cfv Cubiks_Windows_${{matrix.configs}}.zip --format=zip Cubiks_Windows_${{matrix.configs}}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          path: ../build/Cubiks_Windows_${{matrix.configs}}.zip
+          name: Cubiks_Windows_${{matrix.configs}}.zip
+
+  release:
+    name: Release
+    if: contains(github.ref, 'tags/v')
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Store release url
+        run: |
+          echo "${{ steps.create_release.outputs.upload_url }}" > ./upload_url
+
+      - uses: actions/upload-artifact@v1
+        with:
+          path: ./upload_url
+          name: upload_url
+
+  publish:
+    name: Publish
+    if: contains(github.ref, 'tags/v')
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: Cubiks_Windows_Release.zip
+          path: ./
+
+      - name: Download url
+        uses: actions/download-artifact@v1
+        with:
+          name: upload_url
+          path: ./
+
+      - id: set_upload_url
+        run: |
+          upload_url=`cat ./upload_url`
+          echo ::set-output name=upload_url::$upload_url
+
+      - name: Upload to Release
+        id: upload_to_release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
+          asset_path: ./Cubiks_Windows_Release.zip
+          asset_name: Cubiks_Windows_Release.zip
+          asset_content_type: application/zip

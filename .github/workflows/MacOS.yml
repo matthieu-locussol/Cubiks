@@ -54,6 +54,10 @@ jobs:
           cp -R ../Cubiks/assets Cubiks_MacOS_${{matrix.configs}}/.
           cp -R ../Cubiks/shaders Cubiks_MacOS_${{matrix.configs}}/.
 
+      - name: Run tests
+        working-directory: ${{runner.workspace}}/build
+        run: ./CubiksTests
+
       - name: Packing artifacts
         working-directory: ${{runner.workspace}}/build
         run: cmake -E tar cfv Cubiks_MacOS_${{matrix.configs}}.zip --format=zip Cubiks_MacOS_${{matrix.configs}}
