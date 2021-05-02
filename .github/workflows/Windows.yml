@@ -44,11 +44,11 @@ jobs:
         working-directory: ${{runner.workspace}}/build
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
-          md Cubiks_Windows_${{matrix.configs}}
-          xcopy Cubiks.exe Cubiks_Windows_${{matrix.configs}}\.
-          xcopy submodules\*.dll Cubiks_Windows_${{matrix.configs}}\.
-          xcopy ../Cubiks/assets Cubiks_Windows_${{matrix.configs}}\. /s /e /i
-          xcopy ../Cubiks/shaders Cubiks_Windows_${{matrix.configs}}\. /s /e /i
+          mkdir Cubiks_Windows_${{matrix.configs}}
+          cp Cubiks.exe Cubiks_Windows_${{matrix.configs}}/.
+          cp submodules/*.dll Cubiks_Windows_${{matrix.configs}}/.
+          cp -R ../Cubiks/assets Cubiks_Windows_${{matrix.configs}}/.
+          cp -R ../Cubiks/shaders Cubiks_Windows_${{matrix.configs}}/.
 
       - name: Run tests
         working-directory: ${{runner.workspace}}/build
