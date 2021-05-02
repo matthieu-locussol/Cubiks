@@ -45,7 +45,7 @@ jobs:
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
           mkdir Cubiks_Windows_${{matrix.configs}}
-          cp Cubiks.exe Cubiks_Windows_${{matrix.configs}}/.
+          cp ${{matrix.configs}}/Cubiks.exe Cubiks_Windows_${{matrix.configs}}/.
           cp submodules/*.dll Cubiks_Windows_${{matrix.configs}}/.
           cp -R ../Cubiks/assets Cubiks_Windows_${{matrix.configs}}/.
           cp -R ../Cubiks/shaders Cubiks_Windows_${{matrix.configs}}/.
