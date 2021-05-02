@@ -26,11 +26,6 @@ jobs:
         run: |
           cd Cubiks/submodules/glbinding
           git apply ../../patches/0001-fix-removed-deploy-project-from-CMakeLists.txt.patch
-          cd ../glm
-          cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
-          cd build
-          cmake --build . --config "Release" --parallel 4
-          cmake --build . --target install --config "Release"
 
       - name: Configure build
         working-directory: ${{runner.workspace}}
@@ -39,7 +34,7 @@ jobs:
         run: |
           cmake -Bbuild -H$GITHUB_WORKSPACE \
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
-                -DCUBIKS_TESTS=ON \
+                -DCUBIKS_TESTS=OFF \
                 -DCUBIKS_APP=OFF
 
       - name: Build library & tests
