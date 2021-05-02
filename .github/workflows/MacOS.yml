@@ -39,24 +39,56 @@ jobs:
         run: |
           cmake -Bbuild -H$GITHUB_WORKSPACE \
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
-                -DCUBIKS_TESTS=ON
+                -DCUBIKS_TESTS=ON \
+                -DCUBIKS_APP=OFF
 
       - name: Build library & tests
         working-directory: ${{runner.workspace}}/build
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
           mkdir Cubiks_MacOS_${{matrix.configs}}
-          cp Cubiks Cubiks_MacOS_${{matrix.configs}}/.
-          cp submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/.
+          cp Cubiks Cubiks_MacOS_${{matrix.configs}}/. || :
+          cp submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/. || :
           cp -R ../Cubiks/assets Cubiks_MacOS_${{matrix.configs}}/.
           cp -R ../Cubiks/shaders Cubiks_MacOS_${{matrix.configs}}/.
-          ls -al
-          pwd
-          ls -al ..
-          pwd
-          ls -al Cubiks_*
-          pwd
 
       - name: Run tests
         working-directory: ${{runner.workspace}}/build
         run: ./CubiksTests
+
+      - name: Packing artifacts
+        working-directory: ${{runner.workspace}}/build
+        run: cmake -E tar cfv Cubiks_MacOS_${{matrix.configs}}.zip --format=zip Cubiks_MacOS_${{matrix.configs}}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        working-directory: ${{runner.workspace}}/build
+        with:
+          path: ./Cubiks_MacOS_${{matrix.configs}}.zip
+          name: Cubiks_MacOS_${{matrix.configs}}.zip
+
+  release:
+    name: Build
+    if: contains(github.ref, 'tags/v')
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Store Release url
+        run: |
+          echo "${{ steps.create_release.outputs.upload_url }}" > ./upload_url
+      - uses: actions/upload-artifact@v1
+        with:
+          path: ./upload_url
+          name: upload_url
