@@ -49,7 +49,7 @@ jobs:
 
       - name: Install dependencies (Windows & MacOS)
         working-directory: ${{ runner.workspace }}
-        if: ${{ matrix.config.name != "Ubuntu" }}
+        if: ${{ matrix.config.name != 'Ubuntu' }}
         run: |
           cd Cubiks/submodules/glbinding
           git apply ../../patches/0001-fix-removed-deploy-project-from-CMakeLists.txt.patch
