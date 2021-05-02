@@ -102,28 +102,28 @@ jobs:
         if: ${{ matrix.config.name == 'Ubuntu' }}
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
-          mkdir Cubiks_Linux_${{matrix.configs}}
-          mkdir Cubiks_Linux_${{matrix.configs}}/binaries
-          mkdir Cubiks_Linux_${{matrix.configs}}/libraries
-          cp ../Cubiks/scripts/run.sh Cubiks_Linux_${{matrix.configs}}/.
-          cp Cubiks Cubiks_Linux_${{matrix.configs}}/binaries/.
-          cp submodules/**/*.so Cubiks_Linux_${{matrix.configs}}/libraries/.
-          cp -R ../Cubiks/assets Cubiks_Linux_${{matrix.configs}}/.
-          cp -R ../Cubiks/shaders Cubiks_Linux_${{matrix.configs}}/.
+          mkdir Cubiks_Bundle
+          mkdir Cubiks_Bundle/binaries
+          mkdir Cubiks_Bundle/libraries
+          cp ../Cubiks/scripts/run.sh Cubiks_Bundle/.
+          cp Cubiks Cubiks_Bundle/binaries/.
+          cp submodules/**/*.so Cubiks_Bundle/libraries/.
+          cp -R ../Cubiks/assets Cubiks_Bundle/.
+          cp -R ../Cubiks/shaders Cubiks_Bundle/.
 
       - name: Build library & tests (MacOS)
         working-directory: ${{ runner.workspace }}/build
         if: ${{ matrix.config.name == 'MacOS' }}
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
-          mkdir Cubiks_MacOS_${{matrix.configs}}
-          mkdir Cubiks_MacOS_${{matrix.configs}}/binaries
-          mkdir Cubiks_MacOS_${{matrix.configs}}/libraries
-          cp ../Cubiks/scripts/run.sh Cubiks_MacOS_${{matrix.configs}}/.
-          cp Cubiks Cubiks_MacOS_${{matrix.configs}}/binaries/.
-          cp submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/libraries/.
-          cp -R ../Cubiks/assets Cubiks_MacOS_${{matrix.configs}}/.
-          cp -R ../Cubiks/shaders Cubiks_MacOS_${{matrix.configs}}/.
+          mkdir Cubiks_Bundle
+          mkdir Cubiks_Bundle/binaries
+          mkdir Cubiks_Bundle/libraries
+          cp ../Cubiks/scripts/run.sh Cubiks_Bundle/.
+          cp Cubiks Cubiks_Bundle/binaries/.
+          cp submodules/**/*.dylib Cubiks_Bundle/libraries/.
+          cp -R ../Cubiks/assets Cubiks_Bundle/.
+          cp -R ../Cubiks/shaders Cubiks_Bundle/.
 
       - name: Run tests
         working-directory: ${{ runner.workspace }}/build
