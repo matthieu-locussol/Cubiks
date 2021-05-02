@@ -40,19 +40,22 @@ jobs:
           cmake -Bbuild -H$GITHUB_WORKSPACE \
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
                 -DCUBIKS_TESTS=ON
-          ls -al ./build
-          pwd
-          ls -al ./Cubiks_*
-          pwd
-          mkdir Cubiks_MacOS_${{matrix.configs}}
-          cp build/Cubiks Cubiks_MacOS_${{matrix.configs}}/.
-          cp build/submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/.
-          cp -R Cubiks/assets Cubiks_MacOS_${{matrix.configs}}/.
-          cp -R Cubiks/shaders Cubiks_MacOS_${{matrix.configs}}/.
 
       - name: Build library & tests
         working-directory: ${{runner.workspace}}/build
-        run: cmake --build . --config "${{matrix.configs}}" --parallel 4
+        run: |
+          cmake --build . --config "${{matrix.configs}}" --parallel 4
+          mkdir Cubiks_MacOS_${{matrix.configs}}
+          cp Cubiks Cubiks_MacOS_${{matrix.configs}}/.
+          cp submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/.
+          cp -R ../Cubiks/assets Cubiks_MacOS_${{matrix.configs}}/.
+          cp -R ../Cubiks/shaders Cubiks_MacOS_${{matrix.configs}}/.
+          ls -al
+          pwd
+          ls -al ..
+          pwd
+          ls -al Cubiks_*
+          pwd
 
       - name: Run tests
         working-directory: ${{runner.workspace}}/build
