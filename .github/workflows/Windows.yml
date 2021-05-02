@@ -46,7 +46,9 @@ jobs:
           cmake --build . --config "${{matrix.configs}}" --parallel 4
           mkdir Cubiks_Windows_${{matrix.configs}}
           cp ${{matrix.configs}}/Cubiks.exe Cubiks_Windows_${{matrix.configs}}/.
-          cp ${{matrix.configs}}/submodules/*.dll Cubiks_Windows_${{matrix.configs}}/.
+          cp ${{matrix.configs}}/submodules/SFML/lib/${{matrix.configs}}/*.dll Cubiks_Windows_${{matrix.configs}}/.
+          cp ${{matrix.configs}}/submodules/glbinding/${{matrix.configs}}/*.dll Cubiks_Windows_${{matrix.configs}}/.
+          cp ${{matrix.configs}}/submodules/globjects/${{matrix.configs}}/*.dll Cubiks_Windows_${{matrix.configs}}/.
           cp -R ../Cubiks/assets Cubiks_Windows_${{matrix.configs}}/.
           cp -R ../Cubiks/shaders Cubiks_Windows_${{matrix.configs}}/.
 
