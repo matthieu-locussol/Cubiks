@@ -54,7 +54,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
-          path: ./build/Cubiks_MacOS_${{matrix.configs}}.zip
+          path: ../build/Cubiks_MacOS_${{matrix.configs}}.zip
           name: Cubiks_MacOS_${{matrix.configs}}.zip
 
   release:
