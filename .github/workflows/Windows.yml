@@ -38,30 +38,13 @@ jobs:
         run: |
           cmake -Bbuild -H$GITHUB_WORKSPACE \
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
-                -DCUBIKS_TESTS=OFF
-        # -DCUBIKS_TESTS=ON
+                -DCUBIKS_TESTS=ON
 
       - name: Build library & tests
         working-directory: ${{runner.workspace}}/build
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
           mkdir Cubiks_Windows_${{matrix.configs}}
-          ls -al . || :
-          pwd
-          ls -al ./x64 || :
-          pwd
-          ls -al ./x64/${{matrix.configs}} || :
-          pwd
-          ls -al .. || :
-          pwd
-          ls -al ../Cubiks || :
-          pwd
-          ls -al ./x64/${{matrix.configs}}/submodules || :
-          pwd
-          ls -al ./x64/${{matrix.configs}}/submodules/globjects || :
-          pwd
-          ls -al ./x64/${{matrix.configs}}/submodules/globjects/${{matrix.configs}} || :
-          pwd
           cp ${{matrix.configs}}/Cubiks.exe Cubiks_Windows_${{matrix.configs}}/.
           cp submodules/SFML/lib/${{matrix.configs}}/*.dll Cubiks_Windows_${{matrix.configs}}/.
           cp submodules/glbinding/${{matrix.configs}}/*.dll Cubiks_Windows_${{matrix.configs}}/.
@@ -69,9 +52,9 @@ jobs:
           cp -R ../Cubiks/assets Cubiks_Windows_${{matrix.configs}}/.
           cp -R ../Cubiks/shaders Cubiks_Windows_${{matrix.configs}}/.
 
-      # - name: Run tests
-      #   working-directory: ${{runner.workspace}}/build
-      #   run: .\\${{matrix.configs}}\\CubiksTests.exe
+      - name: Run tests
+        working-directory: ${{runner.workspace}}/build
+        run: .\\${{matrix.configs}}\\CubiksTests.exe
 
       - name: Packing artifacts
         working-directory: ${{runner.workspace}}/build
@@ -95,8 +78,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: windows-${{ github.ref }}
+          release_name: Release ${{ github.ref }} - Windows
           draft: false
           prerelease: false
 
