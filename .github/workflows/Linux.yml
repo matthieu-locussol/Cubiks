@@ -44,13 +44,14 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
                 -DCUBIKS_TESTS=ON \
                 -DCUBIKS_BUNDLE=ON
-          ls -al
-          ls -al build
-          ls -al build/Cubiks_*
 
       - name: Build library & tests
         working-directory: ${{runner.workspace}}/build
-        run: cmake --build . --config "${{matrix.configs}}" --parallel 4
+        run: |
+          cmake --build . --config "${{matrix.configs}}" --parallel 4
+          ls -al ../.
+          ls -al .
+          ls -al ./Cubiks_*
 
       - name: Run tests
         working-directory: ${{runner.workspace}}/build
