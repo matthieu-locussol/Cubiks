@@ -26,6 +26,11 @@ jobs:
         run: |
           cd Cubiks/submodules/glbinding
           git apply ../../patches/0001-fix-removed-deploy-project-from-CMakeLists.txt.patch
+          cd ../glm
+          cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
+          cd build
+          cmake --build . --config "Release" --parallel 4
+          sudo cmake --build . --target install --config "Release"
 
       - name: Configure build
         working-directory: ${{runner.workspace}}
@@ -34,16 +39,15 @@ jobs:
         run: |
           cmake -Bbuild -H$GITHUB_WORKSPACE \
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
-                -DCUBIKS_TESTS=OFF \
-                -DCUBIKS_APP=OFF
+                -DCUBIKS_TESTS=ON
 
       - name: Build library & tests
         working-directory: ${{runner.workspace}}/build
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
           mkdir Cubiks_MacOS_${{matrix.configs}}
-          cp Cubiks Cubiks_MacOS_${{matrix.configs}}/. || :
-          cp submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/. || :
+          cp Cubiks Cubiks_MacOS_${{matrix.configs}}/.
+          cp submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/.
           cp -R ../Cubiks/assets Cubiks_MacOS_${{matrix.configs}}/.
           cp -R ../Cubiks/shaders Cubiks_MacOS_${{matrix.configs}}/.
 
