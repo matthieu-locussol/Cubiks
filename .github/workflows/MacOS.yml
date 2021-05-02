@@ -62,9 +62,8 @@ jobs:
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
-        working-directory: ${{runner.workspace}}/build
         with:
-          path: ./Cubiks_MacOS_${{matrix.configs}}.zip
+          path: ./build/Cubiks_MacOS_${{matrix.configs}}.zip
           name: Cubiks_MacOS_${{matrix.configs}}.zip
 
   release:
