@@ -41,6 +41,17 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
                 -DCUBIKS_TESTS=ON \
                 -DCUBIKS_BUNDLE=ON
+          ls -al .
+          pwd
+          ls -al ./Cubiks
+          pwd
+          ls -al ./Cubiks_*
+          pwd
+          mkdir Cubiks_MacOS_${{matrix.configs}}
+          cp build/Cubiks Cubiks_MacOS_${{matrix.configs}}/.
+          cp build/submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/.
+          cp -R Cubiks/assets Cubiks_MacOS_${{matrix.configs}}/.
+          cp -R Cubiks/shaders Cubiks_MacOS_${{matrix.configs}}/.
 
       - name: Build library & tests
         working-directory: ${{runner.workspace}}/build
