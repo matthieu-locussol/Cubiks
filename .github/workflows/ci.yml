@@ -47,16 +47,9 @@ jobs:
         uses: microsoft/setup-msbuild@v1
         if: ${{ matrix.config.name == "Windows" }}
 
-      - name: Install dependencies (Ubuntu)
-        working-directory: ${{runner.workspace}}
-        if: ${{ matrix.config.name == "Ubuntu" }}
-        run: |
-          sudo apt-get -y install libxrandr-dev
-          sudo apt-get -y install libgl1-mesa-dev
-          sudo apt-get -y install libudev-dev
-
-      - name: Install dependencies
+      - name: Install dependencies (Windows & MacOS)
         working-directory: ${{ runner.workspace }}
+        if: ${{ matrix.config.name != "Ubuntu" }}
         run: |
           cd Cubiks/submodules/glbinding
           git apply ../../patches/0001-fix-removed-deploy-project-from-CMakeLists.txt.patch
@@ -65,6 +58,21 @@ jobs:
           cd build
           cmake --build . --config "Release" --parallel 4
           cmake --build . --target install --config "Release"
+
+      - name: Install dependencies (Ubuntu)
+        working-directory: ${{ runner.workspace }}
+        if: ${{ matrix.config.name == "Ubuntu" }}
+        run: |
+          sudo apt-get -y install libxrandr-dev
+          sudo apt-get -y install libgl1-mesa-dev
+          sudo apt-get -y install libudev-dev
+          cd Cubiks/submodules/glbinding
+          git apply ../../patches/0001-fix-removed-deploy-project-from-CMakeLists.txt.patch
+          cd ../glm
+          cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
+          cd build
+          cmake --build . --config "Release" --parallel 4
+          sudo cmake --build . --target install --config "Release"
 
       - name: Configure build
         working-directory: ${{ runner.workspace }}
@@ -104,7 +112,7 @@ jobs:
           cp -R ../Cubiks/shaders Cubiks_Linux_${{matrix.configs}}/.
 
       - name: Build library & tests (MacOS)
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         if: ${{ matrix.config.name == "MacOS" }}
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
@@ -118,17 +126,26 @@ jobs:
           cp -R ../Cubiks/shaders Cubiks_MacOS_${{matrix.configs}}/.
 
       - name: Run tests
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         if: ${{ matrix.config.name == "Windows" }}
         run: .\\Release\\CubiksTests.exe
 
       - name: Run tests
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         if: ${{ matrix.config.name != "Windows" }}
         run: ./CubiksTests
 
+      - name: Setup Valgrind
+        if: ${{ matrix.config.name == "Ubuntu" }}
+        run: sudo apt-get install -y valgrind
+
+      - name: Check memory leaks
+        working-directory: ${{ runner.workspace }}/build
+        if: ${{ matrix.config.name == "Ubuntu" }}
+        run: valgrind --leak-check=full --error-exitcode=1 ./CubiksTests
+
       - name: Packing artifacts
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         run: cmake -E tar cfv ${{ matrix.config.artifact }} --format=zip Cubiks_Bundle
 
       - name: Upload artifact
