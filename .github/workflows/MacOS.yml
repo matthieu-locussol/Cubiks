@@ -80,7 +80,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         with:
-          tag_name: macos-${{ github.ref }}
+          tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }} - MacOS
           draft: false
           prerelease: false

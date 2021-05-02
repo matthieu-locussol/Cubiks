@@ -78,7 +78,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         with:
-          tag_name: windows-${{ github.ref }}
+          tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }} - Windows
           draft: false
           prerelease: false
