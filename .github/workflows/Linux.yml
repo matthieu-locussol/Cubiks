@@ -42,8 +42,7 @@ jobs:
         run: |
           cmake -Bbuild -H$GITHUB_WORKSPACE \
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
-                -DCUBIKS_TESTS=ON \
-                -DCUBIKS_BUNDLE=ON
+                -DCUBIKS_TESTS=ON
 
       - name: Build library & tests
         working-directory: ${{runner.workspace}}/build

@@ -39,11 +39,8 @@ jobs:
         run: |
           cmake -Bbuild -H$GITHUB_WORKSPACE \
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
-                -DCUBIKS_TESTS=ON \
-                -DCUBIKS_BUNDLE=ON
-          ls -al .
-          pwd
-          ls -al ./Cubiks
+                -DCUBIKS_TESTS=ON
+          ls -al ./build
           pwd
           ls -al ./Cubiks_*
           pwd
