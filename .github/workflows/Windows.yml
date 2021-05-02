@@ -27,19 +27,18 @@ jobs:
         run: |
           cd Cubiks/submodules/glbinding
           git apply ../../patches/0001-fix-removed-deploy-project-from-CMakeLists.txt.patch
-        # cd ../glm
-        # cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
-        # cd build
-        # cmake --build . --config "Release" --parallel 4
-        # cmake --build . --target install --config "Release"
+          cd ../glm
+          cmake -Bbuild -DCMAKE_BUILD_TYPE=Release
+          cd build
+          cmake --build . --config "Release" --parallel 4
+          cmake --build . --target install --config "Release"
 
       - name: Configure build
         working-directory: ${{runner.workspace}}
         run: |
           cmake -Bbuild -H$GITHUB_WORKSPACE \
                 -DCMAKE_BUILD_TYPE=${{matrix.configs}} \
-                -DCUBIKS_TESTS=OFF \
-                -DCUBIKS_APP=OFF
+                -DCUBIKS_TESTS=OFF
         # -DCUBIKS_TESTS=ON
 
       - name: Build library & tests
@@ -47,11 +46,21 @@ jobs:
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
           mkdir Cubiks_Windows_${{matrix.configs}}
-          ls -al .
+          ls -al . || :
           pwd
-          ls -al ..
+          ls -al ./x64 || :
           pwd
-          ls -al ../Cubiks/.
+          ls -al ./x64/${{matrix.configs}} || :
+          pwd
+          ls -al .. || :
+          pwd
+          ls -al ../Cubiks || :
+          pwd
+          ls -al ./x64/${{matrix.configs}}/submodules || :
+          pwd
+          ls -al ./x64/${{matrix.configs}}/submodules/globjects || :
+          pwd
+          ls -al ./x64/${{matrix.configs}}/submodules/globjects/${{matrix.configs}} || :
           pwd
           cp ${{matrix.configs}}/Cubiks.exe Cubiks_Windows_${{matrix.configs}}/.
           cp submodules/SFML/lib/${{matrix.configs}}/*.dll Cubiks_Windows_${{matrix.configs}}/.
