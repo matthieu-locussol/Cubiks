@@ -46,8 +46,11 @@ jobs:
         run: |
           cmake --build . --config "${{matrix.configs}}" --parallel 4
           mkdir Cubiks_MacOS_${{matrix.configs}}
-          cp Cubiks Cubiks_MacOS_${{matrix.configs}}/.
-          cp submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/.
+          mkdir Cubiks_MacOS_${{matrix.configs}}/binaries
+          mkdir Cubiks_MacOS_${{matrix.configs}}/libraries
+          cp ../Cubiks/scripts/run.sh Cubiks_MacOS_${{matrix.configs}}/.
+          cp Cubiks Cubiks_MacOS_${{matrix.configs}}/binaries/.
+          cp submodules/**/*.dylib Cubiks_MacOS_${{matrix.configs}}/libraries/.
           cp -R ../Cubiks/assets Cubiks_MacOS_${{matrix.configs}}/.
           cp -R ../Cubiks/shaders Cubiks_MacOS_${{matrix.configs}}/.
 
