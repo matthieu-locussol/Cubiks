@@ -50,6 +50,9 @@ IF( CUBIKS_APP )
 		${CUBIKS_INLINES}
 	)
 
+	# Configuring stb
+	INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}/submodules/stb" )
+
 	# Configuring SFML
 	SET( SFML_BUILD_AUDIO OFF )
 	SET( SFML_BUILD_GRAPHICS OFF )
