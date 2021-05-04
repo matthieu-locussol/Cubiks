@@ -83,15 +83,29 @@ $(document).ready(function(){initNavTree('class_camera.html',''); initResizable(
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_camera-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Camera Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a00ab03c6d8703e48a91b13e363a0958e"><td class="memItemLeft" align="right" valign="top"><a id="a00ab03c6d8703e48a91b13e363a0958e"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Movement</b> { <b>FORWARD</b>, 
+<b>BACKWARD</b>, 
+<b>LEFT</b>, 
+<b>RIGHT</b>
+ }</td></tr>
+<tr class="separator:a00ab03c6d8703e48a91b13e363a0958e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a1ad8bd489971e8f2279fe2d410bcc4d9"><td class="memItemLeft" align="right" valign="top"><a id="a1ad8bd489971e8f2279fe2d410bcc4d9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b> (glm::vec3 position=glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up=glm::vec3(0.0f, 1.0f, 0.0f), float yaw=DEFAULT_YAW, float pitch=DEFAULT_PITCH)</td></tr>
+<tr class="separator:a1ad8bd489971e8f2279fe2d410bcc4d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32200bd57f6c4d7d6dce8d9bac7a7724"><td class="memItemLeft" align="right" valign="top"><a id="a32200bd57f6c4d7d6dce8d9bac7a7724"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b> (<a class="el" href="class_camera.html">Camera</a> &amp;&amp;)=default</td></tr>
 <tr class="separator:a32200bd57f6c4d7d6dce8d9bac7a7724"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -104,9 +118,43 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaa8ba4f5a95a179f86fc534a40af3766"><td class="memItemLeft" align="right" valign="top"><a id="aaa8ba4f5a95a179f86fc534a40af3766"></a>
 <a class="el" href="class_camera.html">Camera</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="class_camera.html">Camera</a> &amp;)=delete</td></tr>
 <tr class="separator:aaa8ba4f5a95a179f86fc534a40af3766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a811613828473f845ff5ab6b38a3492a9"><td class="memItemLeft" align="right" valign="top"><a id="a811613828473f845ff5ab6b38a3492a9"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getZoom</b> () const</td></tr>
+<tr class="separator:a811613828473f845ff5ab6b38a3492a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f90e661a78172675ca06ea69667b531"><td class="memItemLeft" align="right" valign="top"><a id="a2f90e661a78172675ca06ea69667b531"></a>
+glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>getViewMatrix</b> () const</td></tr>
+<tr class="separator:a2f90e661a78172675ca06ea69667b531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12de7596a0e8cb50d8602674c71e04d1"><td class="memItemLeft" align="right" valign="top"><a id="a12de7596a0e8cb50d8602674c71e04d1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>moveCamera</b> (Movement direction, float delta)</td></tr>
+<tr class="separator:a12de7596a0e8cb50d8602674c71e04d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd1603faacd2575bac3618c65d0335d4"><td class="memItemLeft" align="right" valign="top"><a id="abd1603faacd2575bac3618c65d0335d4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>lookCamera</b> (glm::vec2 offset, bool pitchConstraint=true)</td></tr>
+<tr class="separator:abd1603faacd2575bac3618c65d0335d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8212bbf2a24c8496c22de183b08ab3c6"><td class="memItemLeft" align="right" valign="top"><a id="a8212bbf2a24c8496c22de183b08ab3c6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>zoomCamera</b> (glm::vec2 offset)</td></tr>
+<tr class="separator:a8212bbf2a24c8496c22de183b08ab3c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a117a76f2cffb58fca53ddc2af6198a2e"><td class="memItemLeft" align="right" valign="top"><a id="a117a76f2cffb58fca53ddc2af6198a2e"></a>
+constexpr static float&#160;</td><td class="memItemRight" valign="bottom"><b>DEFAULT_YAW</b> = -90.0f</td></tr>
+<tr class="separator:a117a76f2cffb58fca53ddc2af6198a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19f584996f372acd34954fc09828c218"><td class="memItemLeft" align="right" valign="top"><a id="a19f584996f372acd34954fc09828c218"></a>
+constexpr static float&#160;</td><td class="memItemRight" valign="bottom"><b>DEFAULT_PITCH</b> = 0.0f</td></tr>
+<tr class="separator:a19f584996f372acd34954fc09828c218"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac02f7b86931905752b1cc8efb1c96b3f"><td class="memItemLeft" align="right" valign="top"><a id="ac02f7b86931905752b1cc8efb1c96b3f"></a>
+constexpr static float&#160;</td><td class="memItemRight" valign="bottom"><b>DEFAULT_SPEED</b> = 2.5f</td></tr>
+<tr class="separator:ac02f7b86931905752b1cc8efb1c96b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c04a0e9f08a06e714831dbecc907e1b"><td class="memItemLeft" align="right" valign="top"><a id="a4c04a0e9f08a06e714831dbecc907e1b"></a>
+constexpr static float&#160;</td><td class="memItemRight" valign="bottom"><b>DEFAULT_SENSITIVITY</b> = 0.1f</td></tr>
+<tr class="separator:a4c04a0e9f08a06e714831dbecc907e1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f28b839666136630c5483d932c2e028"><td class="memItemLeft" align="right" valign="top"><a id="a7f28b839666136630c5483d932c2e028"></a>
+constexpr static float&#160;</td><td class="memItemRight" valign="bottom"><b>DEFAULT_ZOOM</b> = 45.0f</td></tr>
+<tr class="separator:a7f28b839666136630c5483d932c2e028"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/Cubiks/Cubiks/includes/<a class="el" href="_camera_8hpp_source.html">Camera.hpp</a></li>
+<li>/home/runner/work/Cubiks/Cubiks/sources/Camera.cpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
