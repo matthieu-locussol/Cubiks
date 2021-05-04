@@ -22,12 +22,20 @@ for the JavaScript code in this file
 */
 var NAVTREE =
 [
-  [ "Cubiks", "index.html", ]
+  [ "Cubiks", "index.html", [
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
+      [ "Class Index", "classes.html", null ]
+    ] ],
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ]
+    ] ]
+  ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"index.html"
+"_block_8hpp_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

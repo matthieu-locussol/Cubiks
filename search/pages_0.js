@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cubiks_1',['Cubiks',['../index.html',1,'']]]
+  ['cubiks_5',['Cubiks',['../index.html',1,'']]]
 ];
