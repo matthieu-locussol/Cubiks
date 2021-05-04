@@ -14,3 +14,6 @@
 [submodule "submodules/globjects"]
 	path = submodules/globjects
 	url = https://github.com/cginternals/globjects.git
+[submodule "submodules/stb"]
+	path = submodules/stb
+	url = https://github.com/nothings/stb.git
