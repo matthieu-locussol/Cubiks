@@ -107,7 +107,7 @@ jobs:
           mkdir Cubiks_Bundle/libraries
           cp ../Cubiks/scripts/run.sh Cubiks_Bundle/.
           cp Cubiks Cubiks_Bundle/binaries/.
-          cp submodules/**/*.so Cubiks_Bundle/libraries/.
+          cp submodules/**/*.so* Cubiks_Bundle/libraries/.
           cp -R ../Cubiks/assets Cubiks_Bundle/.
           cp -R ../Cubiks/shaders Cubiks_Bundle/.
 
